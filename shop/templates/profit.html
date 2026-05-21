@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Profit Dashboard - Mall Management{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .kpi-card {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 40px 20px;
+        transition: 0.3s;
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .profit-value {
+        font-size: 48px;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+
+    .badge-soft {
+        background: rgba(255,255,255,0.2);
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .info-card {
+        background: #fff;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        text-align: center;
+    }
+
+    .icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h2 class="page-title">💰 Profit Dashboard</h2>
+        <p class="subtitle">Real-time business earnings overview</p>
+    </div>
+
+    <!-- MAIN PROFIT CARD -->
+    <div class="kpi-card text-center mb-4">
+
+        <span class="badge-soft">📊 TOTAL PROFIT</span>
+
+        <div class="profit-value mt-3">
+            ₹ {{ profit }}
+        </div>
+
+        <p class="mt-3 mb-0">
+            Profit calculated from all completed transactions
+        </p>
+
+    </div>
+
+    <!-- EXTRA INFO CARDS -->
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="info-card">
+                <div class="icon">🧾</div>
+                <h5>Sales Driven</h5>
+                <p class="text-muted mb-0">Based on all invoices</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-card">
+                <div class="icon">📦</div>
+                <h5>Product Profit</h5>
+                <p class="text-muted mb-0">Purchase vs selling price</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-card">
+                <div class="icon">📈</div>
+                <h5>Growth Tracking</h5>
+                <p class="text-muted mb-0">Business performance trend</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

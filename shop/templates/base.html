@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mega Mall POS</title>
+
+    <!-- BOOTSTRAP -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        body{
+
+            margin:0;
+            padding:0;
+            background:#f4f7fe;
+            font-family:Arial,sans-serif;
+
+        }
+
+        .sidebar{
+
+            position:fixed;
+            width:260px;
+            height:100vh;
+            background:#111827;
+            left:0;
+            top:0;
+            overflow-y:auto;
+            padding-top:20px;
+
+        }
+
+        .logo{
+
+            color:white;
+            text-align:center;
+            font-size:30px;
+            font-weight:bold;
+            margin-bottom:40px;
+
+        }
+
+        .sidebar a{
+
+            display:block;
+            color:#d1d5db;
+            text-decoration:none;
+            padding:15px 25px;
+            margin:10px 15px;
+            border-radius:12px;
+            transition:0.3s;
+            font-size:16px;
+            font-weight:500;
+
+        }
+
+        .sidebar a:hover{
+
+            background:#2563eb;
+            color:white;
+            transform:translateX(5px);
+
+        }
+
+        .menu-title{
+
+            color:#9ca3af;
+            font-size:13px;
+            margin-left:25px;
+            margin-top:30px;
+            text-transform:uppercase;
+
+        }
+
+        .content{
+
+            margin-left:260px;
+            padding:30px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        Mega Mall
+
+    </div>
+
+    <a href="{% url 'dashboard' %}">
+
+        <i class="fa fa-home"></i>
+
+        Dashboard
+
+    </a>
+
+    <!-- OWNER PANEL -->
+
+    {% if request.user.userprofile.role == 'owner' %}
+
+    <a href="{% url 'products' %}">
+
+        <i class="fa fa-box"></i>
+
+        Products
+
+    </a>
+
+    <a href="{% url 'billing' %}">
+
+        <i class="fa fa-file-invoice"></i>
+
+        Billing
+
+    </a>
+
+    <a href="{% url 'employees' %}">
+
+        <i class="fa fa-users"></i>
+
+        Employees
+
+    </a>
+
+    <a href="{% url 'stock_alert' %}">
+
+        <i class="fa fa-triangle-exclamation"></i>
+
+        Stock Alerts
+
+    </a>
+
+    <a href="{% url 'reports' %}">
+
+        <i class="fa fa-chart-column"></i>
+
+        Reports
+
+    </a>
+
+    <a href="{% url 'profit_dashboard' %}">
+
+        <i class="fa fa-indian-rupee-sign"></i>
+
+        Profit Dashboard
+
+    </a>
+
+    <a href="{% url 'profit_reports' %}">
+
+        <i class="fa fa-chart-line"></i>
+
+        Profit Reports
+
+    </a>
+
+    <a href="{% url 'suppliers' %}">
+
+        <i class="fa fa-truck"></i>
+
+        Suppliers
+
+    </a>
+
+    <a href="{% url 'expenses' %}">
+
+        <i class="fa fa-wallet"></i>
+
+        Expenses
+
+    </a>
+    
+     <a href="{% url 'attendance' %}">
+
+        <i class="fa fa-calendar-check"></i>
+
+        Attendance</a>
+
+    <a href="{% url 'analytics_dashboard' %}">
+
+        <i class="fa fa-chart-bar"></i>
+
+        Analytics
+
+    </a>
+
+    {% endif %}
+
+    <!-- CASHIER PANEL -->
+
+    {% if request.user.userprofile.role == 'cashier' %}
+
+    <a href="{% url 'billing' %}">
+
+        <i class="fa fa-file-invoice"></i>
+
+        Billing
+
+    </a>
+
+    <a href="{% url 'stock_alert' %}">
+
+        <i class="fa fa-triangle-exclamation"></i>
+
+        Stock Alerts
+
+    </a>
+
+    {% endif %}
+
+    <!-- LOGOUT -->
+
+    <div class="menu-title">
+
+        Account
+
+    </div>
+
+    <a href="{% url 'logout' %}">
+
+        <i class="fa fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</div>
+
+<!-- PAGE CONTENT -->
+
+<div class="content">
+
+    {% block content %}
+
+    {% endblock %}
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
+</html>

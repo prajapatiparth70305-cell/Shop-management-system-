@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}Sales Report - Mall Management{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .kpi-card {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        background: #fff;
+        padding: 20px;
+        transition: 0.3s;
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .kpi-value {
+        font-size: 26px;
+        font-weight: 800;
+        color: #2c3e50;
+    }
+
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .bg-green {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .bg-blue {
+        background: #cfe2ff;
+        color: #084298;
+    }
+
+    .card-premium {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        background: #fff;
+    }
+
+    .table thead {
+        background: #f1f5f9;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #eef6ff;
+    }
+
+    .summary-banner {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .summary-banner h2 {
+        font-weight: 800;
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h2 class="page-title">📊 Daily Sales Dashboard</h2>
+        <p class="subtitle">Real-time sales & performance analytics</p>
+    </div>
+
+    <!-- SUMMARY BANNER -->
+    <div class="summary-banner">
+        <h5>💰 Today’s Revenue</h5>
+        <h2>₹ {{ total_sales.total_amount__sum }}</h2>
+        <small>Total business earnings for today</small>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="kpi-card">
+                <div class="icon-box bg-green">🧾</div>
+                <small class="text-muted text-uppercase">Total Bills</small>
+                <div class="kpi-value">{{ total_bills }}</div>
+                <small class="text-muted">Invoices generated today</small>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="kpi-card">
+                <div class="icon-box bg-blue">📦</div>
+                <small class="text-muted text-uppercase">Sales Value</small>
+                <div class="kpi-value">₹ {{ total_sales.total_amount__sum }}</div>
+                <small class="text-muted">Total revenue generated</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BILL HISTORY -->
+    <div class="card-premium p-4 mb-4">
+
+        <h4 class="mb-3">🧾 Bill History</h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Bill ID</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for bill in bills %}
+                    <tr>
+                        <td><strong>#{{ bill.id }}</strong></td>
+                        <td>{{ bill.customer.name }}</td>
+                        <td>₹ {{ bill.total_amount }}</td>
+                        <td>{{ bill.created_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            No bills found for today
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- SOLD PRODUCTS -->
+    <div class="card-premium p-4">
+
+        <h4 class="mb-3">📦 Sold Products</h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td><strong>{{ item.product.name }}</strong></td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹ {{ item.price }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">
+                            No sold products today
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

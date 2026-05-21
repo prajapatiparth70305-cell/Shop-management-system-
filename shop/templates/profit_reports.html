@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Profit Reports - Mall Management{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .card-premium {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        background: #fff;
+        padding: 20px;
+    }
+
+    .card-premium:hover {
+        transform: translateY(-3px);
+    }
+
+    .profit-value {
+        font-size: 28px;
+        font-weight: 800;
+    }
+
+    .daily {
+        border-left: 6px solid #28a745;
+    }
+
+    .monthly {
+        border-left: 6px solid #0d6efd;
+    }
+
+    .yearly {
+        border-left: 6px solid #212529;
+    }
+
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .bg-green {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .bg-blue {
+        background: #cfe2ff;
+        color: #084298;
+    }
+
+    .bg-dark {
+        background: #e2e3e5;
+        color: #212529;
+    }
+
+    .summary-card {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+        border-radius: 18px;
+        padding: 25px;
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h2 class="page-title">📊 Profit Analytics Dashboard</h2>
+        <p class="subtitle">Track business performance in real-time</p>
+    </div>
+
+    <!-- SUMMARY CARD -->
+    <div class="summary-card mb-4">
+        <h5 class="mb-1">💰 Total Business Profit Overview</h5>
+        <h2 class="mb-0">₹ {{ daily_profit|add:monthly_profit|add:yearly_profit }}</h2>
+        <small>Combined performance snapshot</small>
+    </div>
+
+    <!-- PROFIT CARDS -->
+    <div class="row g-4">
+
+        <!-- DAILY -->
+        <div class="col-md-4">
+            <div class="card-premium daily">
+                <div class="icon-box bg-green">📅</div>
+                <small class="text-muted text-uppercase">Daily Profit</small>
+                <div class="profit-value text-success">₹ {{ daily_profit }}</div>
+                <small class="text-muted">Today's earnings after cost</small>
+            </div>
+        </div>
+
+        <!-- MONTHLY -->
+        <div class="col-md-4">
+            <div class="card-premium monthly">
+                <div class="icon-box bg-blue">📆</div>
+                <small class="text-muted text-uppercase">Monthly Profit</small>
+                <div class="profit-value text-primary">₹ {{ monthly_profit }}</div>
+                <small class="text-muted">This month's performance</small>
+            </div>
+        </div>
+
+        <!-- YEARLY -->
+        <div class="col-md-4">
+            <div class="card-premium yearly">
+                <div class="icon-box bg-dark">📊</div>
+                <small class="text-muted text-uppercase">Yearly Profit</small>
+                <div class="profit-value">₹ {{ yearly_profit }}</div>
+                <small class="text-muted">Annual business growth</small>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Billing - Mall Management
+{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-title {
+        font-weight: 800;
+        font-size: 28px;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .card-premium {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        background: #fff;
+    }
+
+    .card-premium:hover {
+        transform: translateY(-3px);
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        border: none;
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn-success-gradient {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+        color: white;
+        font-weight: 600;
+    }
+
+    .table thead {
+        background: #f1f5f9;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #eef6ff;
+        transition: 0.2s;
+    }
+
+    .total-box {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 15px;
+    }
+
+    .grand-total {
+        font-size: 26px;
+        font-weight: 800;
+        color: #0d6efd;
+    }
+
+    .upi-box {
+        background: linear-gradient(135deg, #fdfbfb, #ebedee);
+        border-radius: 15px;
+        padding: 20px;
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h2 class="page-title">💳 POS Billing Counter</h2>
+        <p class="subtitle">Scan products & generate GST invoice instantly</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- LEFT PANEL -->
+        <div class="col-lg-5">
+
+            <div class="card card-premium p-4 h-100">
+
+                <h4 class="mb-3">📦 Scan Product</h4>
+
+                <form method="POST" action="/barcode-scan/">
+                    {% csrf_token %}
+
+                    <div class="input-group input-group-lg">
+                        <input type="text"
+                               name="barcode"
+                               class="form-control"
+                               placeholder="Scan Barcode..."
+                               autofocus>
+                        <button class="btn btn-gradient">
+                            Add
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center text-muted">
+                    <small>🔎 Use barcode scanner or manual entry</small>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="col-lg-7">
+
+            <div class="card card-premium p-4 h-100">
+
+                <!-- HEADER -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <h4 class="mb-0">🧾 Current Bill</h4>
+                        <small class="text-muted">{{ cart|length }} items</small>
+                    </div>
+                </div>
+
+                <!-- TABLE -->
+                <div class="table-responsive mt-3">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">GST</th>
+                                <th class="text-center">GST Amt</th>
+                                <th class="text-end">Final</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for item in cart %}
+                            <tr>
+                                <td><strong>{{ item.name }}</strong></td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-center">₹ {{ item.price }}</td>
+                                <td class="text-center">{{ item.gst_percent }}%</td>
+                                <td class="text-center text-success">₹ {{ item.gst_amount }}</td>
+                                <td class="text-end fw-bold">₹ {{ item.final_amount }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    No products scanned yet
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- TOTAL BOX -->
+                <div class="total-box mt-4">
+
+                    <div class="d-flex justify-content-between">
+                        <span>Subtotal</span>
+                        <strong>₹ {{ total }}</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span>CGST (9%)</span>
+                        <strong class="text-success">₹ {{ cgst }}</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <span>SGST (9%)</span>
+                        <strong class="text-success">₹ {{ sgst }}</strong>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="grand-total-label">Grand Total</span>
+                        <span class="grand-total">₹ {{ final_amount }}</span>
+                    </div>
+
+                </div>
+
+                <!-- BUTTON -->
+                <div class="d-grid mt-4">
+                    <a href="/save-bill/"
+                       class="btn btn-success-gradient btn-lg rounded-pill">
+                        🖨️ Print GST Invoice
+                    </a>
+                </div>
+
+                <!-- UPI SECTION -->
+                <div class="upi-box text-center mt-4">
+
+                    <img src="/static/images/upi_payment_qr.png"
+                         width="180"
+                         class="mb-2 rounded shadow-sm">
+
+                    <h5>Pay via UPI</h5>
+
+                    <p class="fw-bold text-primary mb-0">
+                        demo@upi
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

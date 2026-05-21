@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock Alerts - Mall Management{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .card-premium {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        background: #fff;
+        transition: 0.3s;
+    }
+
+    .card-premium:hover {
+        transform: translateY(-3px);
+    }
+
+    .badge-count {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    .low-stock {
+        color: #ff9800;
+        font-weight: 600;
+    }
+
+    .out-stock {
+        color: #dc3545;
+        font-weight: 700;
+    }
+
+    .alert-banner {
+        border-radius: 18px;
+        padding: 20px;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+    .alert-warning {
+        background: linear-gradient(135deg, #ffb347, #ffcc33);
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #ff4b1f, #ff9068);
+    }
+
+    .table thead {
+        background: #f1f5f9;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #eef6ff;
+    }
+
+    .status-pill {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    .pill-warning {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .pill-danger {
+        background: #f8d7da;
+        color: #721c24;
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h2 class="page-title">🚨 Stock Alert Dashboard</h2>
+        <p class="subtitle">Monitor inventory levels in real-time</p>
+    </div>
+
+    <!-- ALERT SUMMARY -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-6">
+            <div class="alert-banner alert-warning">
+                <h5>⚠ Low Stock Items</h5>
+                <h2>{{ low_stock_products|length }}</h2>
+                <small>Products need restocking soon</small>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="alert-banner alert-danger">
+                <h5>🚫 Out of Stock</h5>
+                <h2>{{ out_of_stock_products|length }}</h2>
+                <small>Immediate action required</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLES -->
+    <div class="row g-4">
+
+        <!-- LOW STOCK -->
+        <div class="col-lg-6">
+
+            <div class="card card-premium p-4">
+
+                <h4 class="mb-1 text-warning">⚠ Low Stock Products</h4>
+                <p class="subtitle">Items nearing reorder level</p>
+
+                <div class="table-responsive mt-3">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for p in low_stock_products %}
+                            <tr>
+                                <td><strong>#{{ p.id }}</strong></td>
+                                <td>{{ p.name }}</td>
+                                <td class="low-stock">{{ p.quantity }}</td>
+                                <td>
+                                    <span class="status-pill pill-warning">
+                                        Low Stock
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    No low stock products 🎉
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- OUT OF STOCK -->
+        <div class="col-lg-6">
+
+            <div class="card card-premium p-4">
+
+                <h4 class="mb-1 text-danger">🚫 Out of Stock</h4>
+                <p class="subtitle">Needs immediate restocking</p>
+
+                <div class="table-responsive mt-3">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for p in out_of_stock_products %}
+                            <tr>
+                                <td><strong>#{{ p.id }}</strong></td>
+                                <td>{{ p.name }}</td>
+                                <td>
+                                    <span class="status-pill pill-danger">
+                                        Out of Stock
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">
+                                    All products in stock 🎉
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

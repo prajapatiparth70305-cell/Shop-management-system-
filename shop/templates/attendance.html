@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .page-title {
+        font-weight: 700;
+        font-size: 26px;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .card-custom {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .btn-gradient-success {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn-gradient-danger {
+        background: linear-gradient(135deg, #dc3545, #ff6b6b);
+        border: none;
+        color: white;
+        font-weight: 600;
+    }
+
+    .table thead {
+        background: #f8f9fa;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #f1f7ff;
+        transition: 0.3s;
+    }
+
+    .badge-custom {
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    .badge-in {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .badge-out {
+        background: #f8d7da;
+        color: #842029;
+    }
+</style>
+
+<div class="container">
+
+    <h2 class="page-title">👨‍💼 Employee Attendance Dashboard</h2>
+
+    <!-- FORM CARD -->
+    <div class="card card-custom p-4 mb-4">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row align-items-center">
+
+                <div class="col-md-5 mb-2">
+                    <select name="employee" class="form-control form-control-lg">
+                        {% for emp in employees %}
+                        <option value="{{ emp.id }}">{{ emp.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    <button name="action" value="checkin"
+                        class="btn btn-gradient-success w-100 btn-lg">
+                        Check In
+                    </button>
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    <button name="action" value="checkout"
+                        class="btn btn-gradient-danger w-100 btn-lg">
+                        Check Out
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="card card-custom p-4">
+
+        <h5 class="mb-3">📋 Attendance Records</h5>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td><strong>{{ record.employee.name }}</strong></td>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.check_in|default:"--" }}</td>
+                        <td>{{ record.check_out|default:"--" }}</td>
+
+                        <td>
+                            {% if record.status == "Present" %}
+                                <span class="badge badge-custom badge-in">Present</span>
+                            {% else %}
+                                <span class="badge badge-custom badge-out">{{ record.status }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a href="{% url 'delete_attendance' record.id %}"
+                               class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

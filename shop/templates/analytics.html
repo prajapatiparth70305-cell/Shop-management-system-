@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+.analytics-card{
+
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+    transition:0.3s;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+}
+
+.analytics-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.gradient-blue{
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #1e40af
+    );
+
+    color:white;
+
+}
+
+.gradient-green{
+
+    background:linear-gradient(
+        135deg,
+        #16a34a,
+        #166534
+    );
+
+    color:white;
+
+}
+
+.gradient-red{
+
+    background:linear-gradient(
+        135deg,
+        #dc2626,
+        #991b1b
+    );
+
+    color:white;
+
+}
+
+.chart-card{
+
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+}
+
+</style>
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+
+                Sales Analytics Dashboard
+
+            </h2>
+
+            <p class="text-muted">
+
+                Welcome to Mega Mall Analytics
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- TOP CARDS -->
+
+    <div class="row">
+
+        <!-- PROFIT -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card analytics-card gradient-green p-4">
+
+                <h5>
+
+                    Total Profit
+
+                </h5>
+
+                <h1 class="fw-bold">
+
+                    ₹ {{ profit }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+        <!-- EXPENSE -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card analytics-card gradient-red p-4">
+
+                <h5>
+
+                    Total Expenses
+
+                </h5>
+
+                <h1 class="fw-bold">
+
+                    ₹ {{ expense }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CHART -->
+
+    <div class="chart-card">
+
+        <h4 class="mb-4">
+
+            Daily Sales Graph
+
+        </h4>
+
+        <canvas id="salesChart"
+                height="100">
+
+        </canvas>
+
+    </div>
+
+</div>
+
+<script>
+
+const salesLabels = JSON.parse(
+    '{{ sales_labels|escapejs }}'
+);
+
+const salesData = JSON.parse(
+    '{{ sales_data|escapejs }}'
+);
+
+const ctx = document.getElementById(
+    'salesChart'
+);
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: salesLabels,
+
+        datasets: [{
+
+            label: 'Daily Sales',
+
+            data: salesData,
+
+            borderColor: '#2563eb',
+
+            backgroundColor: 'rgba(37,99,235,0.1)',
+
+            borderWidth: 4,
+
+            fill: true,
+
+            tension: 0.4,
+
+            pointRadius: 5
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: true
+
+            }
+
+        },
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

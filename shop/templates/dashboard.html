@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- TOPBAR -->
+
+<div style="
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+margin-bottom:30px;
+">
+
+    <h2>
+
+        Welcome {{ request.user.username }}
+
+    </h2>
+
+    <p>
+
+        Role :
+        {{ request.user.userprofile.role }}
+
+    </p>
+
+</div>
+
+<!-- OWNER DASHBOARD -->
+
+{% if role == 'owner' %}
+
+<div class="row">
+
+    <div class="col-md-3 mb-4">
+
+        <div class="card p-4 bg-success text-white shadow border-0">
+
+            <h4>Total Sales</h4>
+
+            <h2>
+                ₹ {{ total_sales }}
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3 mb-4">
+
+        <div class="card p-4 bg-danger text-white shadow border-0">
+
+            <h4>Total Expense</h4>
+
+            <h2>
+                ₹ {{ total_expense }}
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3 mb-4">
+
+        <div class="card p-4 bg-primary text-white shadow border-0">
+
+            <h4>Total Bills</h4>
+
+            <h2>
+                {{ bills }}
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card p-4 bg-warning shadow border-0">
+
+            <h4>Total Products</h4>
+
+            <h2>
+                {{ products }}
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card p-4 bg-info text-white shadow border-0">
+
+            <h4>Total Employees</h4>
+
+            <h2>
+                {{ employees }}
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card p-4 bg-secondary text-white shadow border-0">
+
+            <h4>Total Suppliers</h4>
+
+            <h2>
+                {{ suppliers }}
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+<!-- CASHIER DASHBOARD -->
+
+{% if role == 'cashier' %}
+
+<div class="card p-5 shadow border-0 text-center">
+
+    <h2 class="mb-4">
+
+        Cashier Panel
+
+    </h2>
+
+    <a href="{% url 'billing' %}"
+       class="btn btn-primary btn-lg">
+
+       Open Billing Counter
+
+    </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

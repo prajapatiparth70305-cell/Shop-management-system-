@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .receipt {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            padding: 24px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .header p {
+            margin: 4px 0 0;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .meta {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 0;
+            color: #6c757d;
+            border-bottom: 1px solid #eee;
+        }
+
+        td {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .summary {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 2px solid #f1f1f1;
+        }
+
+        .line {
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .grand-total {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0d6efd;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e9f7ef;
+            color: #198754;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .receipt {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="receipt">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h2>🛒 Mega Mall POS</h2>
+        <p>GST Invoice Receipt</p>
+    </div>
+
+    <div class="meta">
+        <span class="badge">BILL RECEIPT</span><br>
+        Thank you for shopping with us
+    </div>
+
+    <!-- ITEMS -->
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th class="right">Qty</th>
+                <th class="right">Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td class="right">{{ item.quantity }}</td>
+                <td class="right">₹ {{ item.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+
+        <div class="line">
+            <span>CGST (9%)</span>
+            <strong>₹ {{ bill.cgst }}</strong>
+        </div>
+
+        <div class="line">
+            <span>SGST (9%)</span>
+            <strong>₹ {{ bill.sgst }}</strong>
+        </div>
+
+        <div class="grand-total">
+            <span>Grand Total</span>
+            <span>₹ {{ bill.final_amount }}</span>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        Visit again ❤️ | Powered by Mega Mall System
+    </div>
+
+</div>
+
+<script>
+    window.print();
+</script>
+
+</body>
+</html>

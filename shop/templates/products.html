@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - Mall Management{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2c3e50;
+    }
+
+    .subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+
+    .card-premium {
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: 0.3s;
+        background: #fff;
+    }
+
+    .card-premium:hover {
+        transform: translateY(-3px);
+    }
+
+    .form-control, .form-select {
+        border-radius: 50px !important;
+        padding: 10px 15px;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        border: none;
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn-gradient:hover {
+        opacity: 0.9;
+    }
+
+    .table thead {
+        background: #f1f5f9;
+    }
+
+    .table-hover tbody tr:hover {
+        background: #eef6ff;
+        transition: 0.2s;
+    }
+
+    .badge-custom {
+        border-radius: 20px;
+        padding: 6px 12px;
+    }
+
+    .stock-low {
+        color: #dc3545;
+        font-weight: 600;
+    }
+
+    .stock-good {
+        color: #198754;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container py-3">
+
+    <!-- HEADER -->
+    <div class="mb-4">
+        <h2 class="page-title">📦 Product Management</h2>
+        <p class="subtitle">Add, manage & track inventory in real-time</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="card card-premium p-4 mb-4">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small text-muted">Category</label>
+                    <select name="category" class="form-select">
+                        {% for c in categories %}
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small text-muted">Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Product Name">
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small text-muted">Barcode</label>
+                    <input type="text" name="barcode" class="form-control" placeholder="Barcode">
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small text-muted">Price</label>
+                    <input type="number" name="price" class="form-control" placeholder="Price">
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <label class="form-label small text-muted">Quantity</label>
+                    <input type="number" name="quantity" class="form-control" placeholder="Stock">
+                </div>
+
+                <div class="col-lg-2 col-md-6 d-grid">
+                    <button class="btn btn-gradient btn-lg rounded-pill">
+                        ➕ Add Product
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card card-premium p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <div>
+                <h4 class="mb-0">📋 Product Catalog</h4>
+                <small class="text-muted">All inventory items</small>
+            </div>
+
+            <span class="badge bg-primary px-3 py-2 rounded-pill">
+                {{ products|length }} Items
+            </span>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Barcode</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for p in products %}
+                    <tr>
+
+                        <td><strong>#{{ p.id }}</strong></td>
+
+                        <td>{{ p.name }}</td>
+
+                        <td><code>{{ p.barcode }}</code></td>
+
+                        <td>₹ {{ p.price }}</td>
+
+                        <td>
+                            {% if p.quantity <= 5 %}
+                                <span class="stock-low">{{ p.quantity }} (Low)</span>
+                            {% else %}
+                                <span class="stock-good">{{ p.quantity }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if p.quantity <= 5 %}
+                                <span class="badge bg-danger rounded-pill">Low Stock</span>
+                            {% else %}
+                                <span class="badge bg-success rounded-pill">In Stock</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="text-end">
+                            <a href="{% url 'delete_product' p.id %}" class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            No products added yet
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
