@@ -15,6 +15,8 @@ from django.utils import timezone
 from django.db.models.functions import TruncDate
 import json
 cart = {}
+def home(request):
+    return HttpResponse("Shop Management System Running Successfully")
 
 def signup_page(request):
 
