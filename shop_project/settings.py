@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL")
+    )
+}
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,14 +86,9 @@ WSGI_APPLICATION = 'shop_project.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'shop_db',
-        'USER':'postgres',
-        'PASSWORD':'root',
-        'HOST':'localhost',
-        'PORT':'5432',
-    }
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL")
+    )
 }
 
 
