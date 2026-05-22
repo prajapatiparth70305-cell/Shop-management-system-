@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Mall POS System</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #081028;
+            --panel: rgba(17, 24, 39, 0.92);
+            --panel-soft: rgba(30, 41, 59, 0.75);
+            --text: #e2e8f0;
+            --accent: #4f46e5;
+            --accent-soft: #eef2ff;
+            --border: rgba(148, 163, 184, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.22), transparent 30%),
+                        linear-gradient(180deg, #0b1228 0%, #080b1d 100%);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar {
+            background: var(--panel);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            color: #f8fafc !important;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-link {
+            color: #cbd5e1 !important;
+            margin-left: 1.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+        .hero {
+            position: relative;
+            padding: 5rem 1rem 4rem;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.24), transparent 25%),
+                        radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.14), transparent 20%);
+            pointer-events: none;
+        }
+
+        .hero .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.75rem, 5vw, 4.5rem);
+            line-height: 1.02;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            max-width: 680px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions .btn {
+            min-width: 170px;
+            padding: 0.95rem 1.6rem;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .hero-stats {
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: var(--panel-soft);
+            border: 1px solid var(--border);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            color: var(--text);
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-heading {
+            font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-card {
+            background: #0f172a;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            min-height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+        }
+
+        .feature-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            background: rgba(79, 70, 229, 0.12);
+            color: #8b5cf6;
+            margin-bottom: 1.25rem;
+            font-size: 1.35rem;
+        }
+
+        .feature-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.9rem;
+        }
+
+        .feature-card p {
+            color: #cbd5e1;
+            margin-bottom: 0;
+        }
+
+        .cta-banner {
+            background: linear-gradient(180deg, rgba(79, 70, 229, 0.16), rgba(15, 23, 42, 0.96));
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .cta-banner h3 {
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .footer {
+            padding: 1.75rem 1rem;
+            text-align: center;
+            color: #94a3b8;
+            border-top: 1px solid rgba(148, 163, 184, 0.12);
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 767px) {
+            .hero {
+                padding-top: 3.5rem;
+            }
+
+            .hero-stats .col {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Mega Mall</a>
+            <div class="d-flex align-items-center gap-2">
+                <a class="btn btn-outline-light btn-sm rounded-pill" href="/login/">Login</a>
+               
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="row align-items-center gy-5">
+                <div class="col-lg-7">
+                    <p class="text-uppercase text-primary fw-semibold mb-3">POS for modern retail</p>
+                    <h1 class="hero-title">Premium Retail Management<br>for Smart Shops and Malls</h1>
+                    <p class="hero-subtitle">Streamline billing, inventory, analytics, and employee workflows with a sleek POS solution built for efficiency, accuracy, and growth.</p>
+
+                    <div class="hero-actions d-flex flex-wrap gap-3">
+                        <a href="/login/" class="btn btn-primary btn-lg">Get Started</a>
+                        <a href="#features" class="btn btn-outline-light btn-lg">Explore Features</a>
+                    </div>
+
+                    <div class="row hero-stats mt-4">
+                        <div class="col-sm-4">
+                            <div class="stat-card text-center">
+                                <div class="value">99.9%</div>
+                                <div>Uptime Reliability</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="stat-card text-center">
+                                <div class="value">200+</div>
+                                <div>Daily Bills Processed</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="stat-card text-center">
+                                <div class="value">24/7</div>
+                                <div>Support Ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="feature-card">
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <div class="feature-icon bg-white text-primary"><i class="fa fa-store"></i></div>
+                            <div>
+                                <h5 class="mb-1">All-in-one retail dashboard</h5>
+                                <p class="mb-0 text-muted">One place for billing, stock, bills, reports and supplier management.</p>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between text-muted mb-2"><span>GST Invoicing</span><strong>Fast</strong></div>
+                            <div class="progress rounded-pill" style="height: 10px;"><div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 95%;"></div></div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between text-muted mb-2"><span>Inventory Alerts</span><strong>Instant</strong></div>
+                            <div class="progress rounded-pill" style="height: 10px;"><div class="progress-bar bg-info rounded-pill" role="progressbar" style="width: 88%;"></div></div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between text-muted mb-2"><span>Profit Reports</span><strong>Insightful</strong></div>
+                            <div class="progress rounded-pill" style="height: 10px;"><div class="progress-bar bg-success rounded-pill" role="progressbar" style="width: 92%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5" id="features">
+        <div class="text-center mb-5">
+            <p class="text-uppercase text-primary fw-semibold mb-2">Why choose Mega Mall</p>
+            <h2 class="section-heading">Powerful features for every shop owner</h2>
+            <p class="section-subtitle">A modern retail platform designed to replace manual workflows with automation, strong analytics and faster billing.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon"><i class="fa fa-file-invoice"></i></div>
+                    <h4>Smart Billing</h4>
+                    <p>Fast barcode billing with GST-ready invoices, PDF receipts, and cashless payment support.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon"><i class="fa fa-boxes-stacked"></i></div>
+                    <h4>Inventory Control</h4>
+                    <p>Track stock levels, set low-stock alerts, and manage suppliers from a single dashboard.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon"><i class="fa fa-chart-line"></i></div>
+                    <h4>Analytics Dashboard</h4>
+                    <p>View sales, profit trends, and expense breakdowns to make quicker decisions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-banner">
+            <h3>Ready to upgrade your shop management?</h3>
+            <p class="text-muted mb-4">Start using Mega Mall today to simplify operations and grow revenue with better visibility.</p>
+            <a href="/signup/" class="btn btn-primary btn-lg rounded-pill">Start Free Trial</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        © 2026 Mega Mall POS System | Developed by Parth Prajapati
+    </footer>
+</body>
+
+</html>

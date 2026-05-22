@@ -16,7 +16,7 @@ from django.db.models.functions import TruncDate
 import json
 cart = {}
 def home(request):
-    return HttpResponse("Shop Management System Running Successfully")
+    return render(request, 'home.html')
 
 def signup_page(request):
 
