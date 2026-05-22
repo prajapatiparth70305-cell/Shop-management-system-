@@ -18,11 +18,21 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import path
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Shop Management System Running Successfully")
+
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('shop.urls'))
+    path('',include('shop.urls')),
+    path('', home),
+
 ]
 
 if settings.DEBUG:
