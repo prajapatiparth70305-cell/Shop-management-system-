@@ -5,142 +5,250 @@
 {% block content %}
 
 <style>
-    body {
-        background: #f4f7fb;
+
+    body{
+        background:#f4f7fb;
     }
 
-    .page-title {
-        font-size: 28px;
-        font-weight: 800;
-        color: #2c3e50;
+    .page-title{
+        font-size:30px;
+        font-weight:800;
+        color:#1e293b;
     }
 
-    .subtitle {
-        color: #7f8c8d;
-        font-size: 14px;
+    .subtitle{
+        color:#64748b;
+        font-size:14px;
     }
 
-    .card-premium {
-        border: none;
-        border-radius: 18px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-        transition: 0.3s;
-        background: #fff;
+    .card-premium{
+        border:none;
+        border-radius:22px;
+        background:white;
+        box-shadow:0 10px 30px rgba(0,0,0,0.08);
     }
 
-    .card-premium:hover {
-        transform: translateY(-3px);
+    .form-control,
+    .form-select{
+        border-radius:50px !important;
+        padding:12px 18px;
+        border:1px solid #e2e8f0;
     }
 
-    .form-control, .form-select {
-        border-radius: 50px !important;
-        padding: 10px 15px;
+    .form-control:focus,
+    .form-select:focus{
+        box-shadow:none;
+        border-color:#3b82f6;
     }
 
-    .btn-gradient {
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-        border: none;
-        color: white;
-        font-weight: 600;
+    .btn-gradient{
+        background:linear-gradient(135deg,#3b82f6,#06b6d4);
+        border:none;
+        color:white;
+        font-weight:600;
+        padding:12px;
+        border-radius:50px;
     }
 
-    .btn-gradient:hover {
-        opacity: 0.9;
+    .btn-gradient:hover{
+        opacity:0.95;
+        color:white;
     }
 
-    .table thead {
-        background: #f1f5f9;
+    .btn-category{
+        background:#111827;
+        color:white;
+        border:none;
+        border-radius:50px;
+        padding:10px 20px;
+        font-weight:600;
     }
 
-    .table-hover tbody tr:hover {
-        background: #eef6ff;
-        transition: 0.2s;
+    .btn-category:hover{
+        background:#1e293b;
+        color:white;
     }
 
-    .badge-custom {
-        border-radius: 20px;
-        padding: 6px 12px;
+    .table thead{
+        background:#f8fafc;
     }
 
-    .stock-low {
-        color: #dc3545;
-        font-weight: 600;
+    .table-hover tbody tr:hover{
+        background:#eff6ff;
+        transition:0.2s;
     }
 
-    .stock-good {
-        color: #198754;
-        font-weight: 600;
+    .stock-low{
+        color:#dc2626;
+        font-weight:700;
     }
+
+    .stock-good{
+        color:#16a34a;
+        font-weight:700;
+    }
+
+    .badge-status{
+        padding:8px 14px;
+        border-radius:50px;
+        font-size:12px;
+    }
+
 </style>
 
-<div class="container py-3">
+<div class="container-fluid py-3">
 
     <!-- HEADER -->
-    <div class="mb-4">
-        <h2 class="page-title">📦 Product Management</h2>
-        <p class="subtitle">Add, manage & track inventory in real-time</p>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="page-title">
+                📦 Product Management
+            </h2>
+
+            <p class="subtitle">
+                Add, manage & track inventory in real-time
+            </p>
+
+        </div>
+
+        <!-- ADD CATEGORY BUTTON -->
+
+        <button class="btn-category"
+                data-bs-toggle="modal"
+                data-bs-target="#categoryModal">
+
+            ➕ Add Category
+
+        </button>
+
     </div>
 
-    <!-- FORM -->
+    <!-- PRODUCT FORM -->
+
     <div class="card card-premium p-4 mb-4">
 
         <form method="POST">
+
             {% csrf_token %}
 
             <div class="row g-3 align-items-end">
 
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label small text-muted">Category</label>
-                    <select name="category" class="form-select">
+                <div class="col-lg-2">
+
+                    <label class="form-label small text-muted">
+                        Category
+                    </label>
+
+                    <select name="category"
+                            class="form-select">
+
                         {% for c in categories %}
-                        <option value="{{ c.id }}">{{ c.name }}</option>
+
+                        <option value="{{ c.id }}">
+
+                            {{ c.name }}
+
+                        </option>
+
                         {% endfor %}
+
                     </select>
+
                 </div>
 
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label small text-muted">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Product Name">
+                <div class="col-lg-2">
+
+                    <label class="form-label small text-muted">
+                        Product Name
+                    </label>
+
+                    <input type="text"
+                           name="name"
+                           class="form-control"
+                           placeholder="Coca Cola">
+
                 </div>
 
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label small text-muted">Barcode</label>
-                    <input type="text" name="barcode" class="form-control" placeholder="Barcode">
+                <div class="col-lg-2">
+
+                    <label class="form-label small text-muted">
+                        Barcode
+                    </label>
+
+                    <input type="text"
+                           name="barcode"
+                           class="form-control"
+                           placeholder="Barcode">
+
                 </div>
 
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label small text-muted">Price</label>
-                    <input type="number" name="price" class="form-control" placeholder="Price">
+                <div class="col-lg-2">
+
+                    <label class="form-label small text-muted">
+                        Price
+                    </label>
+
+                    <input type="number"
+                           name="price"
+                           class="form-control"
+                           placeholder="Selling Price">
+
                 </div>
 
-                <div class="col-lg-2 col-md-6">
-                    <label class="form-label small text-muted">Quantity</label>
-                    <input type="number" name="quantity" class="form-control" placeholder="Stock">
+                <div class="col-lg-2">
+
+                    <label class="form-label small text-muted">
+                        Quantity
+                    </label>
+
+                    <input type="number"
+                           name="quantity"
+                           class="form-control"
+                           placeholder="Stock">
+
                 </div>
 
-                <div class="col-lg-2 col-md-6 d-grid">
-                    <button class="btn btn-gradient btn-lg rounded-pill">
+                <div class="col-lg-2 d-grid">
+
+                    <button class="btn btn-gradient">
+
                         ➕ Add Product
+
                     </button>
+
                 </div>
 
             </div>
+
         </form>
 
     </div>
 
-    <!-- TABLE -->
+    <!-- PRODUCT TABLE -->
+
     <div class="card card-premium p-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
             <div>
-                <h4 class="mb-0">📋 Product Catalog</h4>
-                <small class="text-muted">All inventory items</small>
+
+                <h4 class="mb-0">
+                    📋 Product Catalog
+                </h4>
+
+                <small class="text-muted">
+                    All inventory products
+                </small>
+
             </div>
 
-            <span class="badge bg-primary px-3 py-2 rounded-pill">
+            <span class="badge bg-primary rounded-pill px-3 py-2">
+
                 {{ products|length }} Items
+
             </span>
 
         </div>
@@ -150,64 +258,189 @@
             <table class="table table-hover align-middle">
 
                 <thead>
+
                     <tr>
+
                         <th>ID</th>
                         <th>Product</th>
+                        <th>Category</th>
                         <th>Barcode</th>
                         <th>Price</th>
                         <th>Stock</th>
                         <th>Status</th>
                         <th class="text-end">Action</th>
+
                     </tr>
+
                 </thead>
 
                 <tbody>
 
                     {% for p in products %}
+
                     <tr>
 
-                        <td><strong>#{{ p.id }}</strong></td>
-
-                        <td>{{ p.name }}</td>
-
-                        <td><code>{{ p.barcode }}</code></td>
-
-                        <td>₹ {{ p.price }}</td>
-
                         <td>
-                            {% if p.quantity <= 5 %}
-                                <span class="stock-low">{{ p.quantity }} (Low)</span>
-                            {% else %}
-                                <span class="stock-good">{{ p.quantity }}</span>
-                            {% endif %}
+                            <strong>#{{ p.id }}</strong>
                         </td>
 
                         <td>
+                            {{ p.name }}
+                        </td>
+
+                        <td>
+                            {{ p.category.name }}
+                        </td>
+
+                        <td>
+                            <code>{{ p.barcode }}</code>
+                        </td>
+
+                        <td>
+                            ₹ {{ p.price }}
+                        </td>
+
+                        <td>
+
                             {% if p.quantity <= 5 %}
-                                <span class="badge bg-danger rounded-pill">Low Stock</span>
+
+                                <span class="stock-low">
+
+                                    {{ p.quantity }}
+
+                                </span>
+
                             {% else %}
-                                <span class="badge bg-success rounded-pill">In Stock</span>
+
+                                <span class="stock-good">
+
+                                    {{ p.quantity }}
+
+                                </span>
+
                             {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if p.quantity <= 5 %}
+
+                                <span class="badge bg-danger badge-status">
+
+                                    Low Stock
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-success badge-status">
+
+                                    In Stock
+
+                                </span>
+
+                            {% endif %}
+
                         </td>
 
                         <td class="text-end">
-                            <a href="{% url 'delete_product' p.id %}" class="btn btn-sm btn-outline-danger">
+
+                            <a href="{% url 'delete_product' p.id %}"
+                               class="btn btn-sm btn-outline-danger rounded-pill">
+
                                 Delete
+
                             </a>
+
                         </td>
 
                     </tr>
+
                     {% empty %}
+
                     <tr>
-                        <td colspan="6" class="text-center text-muted py-4">
+
+                        <td colspan="8"
+                            class="text-center py-5 text-muted">
+
                             No products added yet
+
                         </td>
+
                     </tr>
+
                     {% endfor %}
 
                 </tbody>
 
             </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CATEGORY MODAL -->
+
+<div class="modal fade"
+     id="categoryModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+
+            <div class="modal-header border-0">
+
+                <h5 class="modal-title fw-bold">
+
+                    ➕ Add Category
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <label class="form-label">
+
+                        Category Name
+
+                    </label>
+
+                    <input type="text"
+                           name="category_name"
+                           class="form-control"
+                           placeholder="Enter category name"
+                           required>
+
+                </div>
+
+                <div class="modal-footer border-0">
+
+                    <button type="submit"
+                            name="add_category"
+                            class="btn btn-success rounded-pill px-4">
+
+                        Save Category
+
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
 

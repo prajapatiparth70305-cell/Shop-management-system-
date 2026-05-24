@@ -199,37 +199,94 @@ def dashboard(request):
         context
     )
 
-
 def products(request):
 
+    # ADD CATEGORY
+
     if request.method == "POST":
-        category_id = request.POST.get('category')
-        name = request.POST.get('name')
-        barcode = request.POST.get('barcode')
-        price = request.POST.get('price')
-        quantity = request.POST.get('quantity')
 
-        category = Category.objects.get(id=category_id)
+        # CATEGORY SAVE
 
-        Product.objects.create(
-            category=category,
-            name=name,
-            barcode=barcode,
-            price=price,
-            quantity=quantity
-        )
+        if 'add_category' in request.POST:
 
-        return redirect('/products/')
+            category_name = request.POST.get(
+                'category_name'
+            )
 
-    products = Product.objects.all()
+            Category.objects.create(
+                name=category_name
+            )
+
+            return redirect('/products/')
+
+        # PRODUCT SAVE
+
+        else:
+
+            category_id = request.POST.get(
+                'category'
+            )
+
+            name = request.POST.get(
+                'name'
+            )
+
+            barcode = request.POST.get(
+                'barcode'
+            )
+
+            price = request.POST.get(
+                'price'
+            )
+
+            quantity = request.POST.get(
+                'quantity'
+            )
+
+            category = Category.objects.get(
+                id=category_id
+            )
+
+            Product.objects.create(
+
+                category=category,
+
+                name=name,
+
+                barcode=barcode,
+
+                price=price,
+
+                quantity=quantity
+
+            )
+
+            return redirect('/products/')
+
+    # FETCH DATA
+
+    products = Product.objects.all().order_by(
+        '-id'
+    )
+
     categories = Category.objects.all()
 
     context = {
+
         'products': products,
+
         'categories': categories
+
     }
 
-    return render(request, 'products.html', context)
+    return render(
+
+        request,
+
+        'products.html',
+
+        context
+    )
 
 
 def delete_product(request, id):
